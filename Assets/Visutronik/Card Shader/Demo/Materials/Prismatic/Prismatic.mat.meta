@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0aced3676df67dc4da45f529bb0a46e7
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Demo/Materials/Prismatic/Prismatic.mat
+  uploadId: 729359

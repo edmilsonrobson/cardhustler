@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 95d641f529935034ebd82c7d3656c54b
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Shaders/Sparkle/SparkleShader.shadergraph
+  uploadId: 729359

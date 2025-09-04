@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0394dac22e3aa5d49becb5fecdf93225
+ShaderIncludeImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Shaders/Sparkle/RandomNormal.hlsl
+  uploadId: 729359

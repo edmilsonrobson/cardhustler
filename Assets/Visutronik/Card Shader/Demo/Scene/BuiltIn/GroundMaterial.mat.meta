@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 058f818275f83094e846855c857da234
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Demo/Scene/BuiltIn/GroundMaterial.mat
+  uploadId: 729359

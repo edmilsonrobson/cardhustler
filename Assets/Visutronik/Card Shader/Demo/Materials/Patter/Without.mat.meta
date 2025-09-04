@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 55eee48c472481c43858cfa35158beee
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Demo/Materials/Patter/Without.mat
+  uploadId: 729359

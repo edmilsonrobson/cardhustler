@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3047b141758ba8849ab7f3a51d96fe56
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309803
+  packageName: Card Effects
+  packageVersion: 1.0
+  assetPath: Assets/Visutronik/Card Shader/Demo/Materials/Glow/Symbol.mat
+  uploadId: 729359
