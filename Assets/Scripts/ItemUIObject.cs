@@ -28,7 +28,7 @@ public class ItemUIObject : MonoBehaviour
     {
         // just do DOPunchScale yoyo
 
-        var duration = Vector3.Distance(transform.position, position) / 300f;
+        var duration = Vector3.Distance(transform.position, position) / 800f;
 
         var seq = DOTween.Sequence();
         seq.Append(transform.DOMove(position, duration).SetEase(Ease.OutQuad));

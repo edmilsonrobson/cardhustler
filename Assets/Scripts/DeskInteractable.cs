@@ -6,4 +6,14 @@ public class DeskInteractable : Interactable
     {
         UIManager.Instance.ToggleComputerMonitor();
     }
+
+    public override void OnInteractStart()
+    {
+        base.OnInteractStart();
+    }
+
+    public override void OnInteractEnd()
+    {
+        base.OnInteractEnd();
+    }
 }

@@ -29,4 +29,26 @@ public class CardSet
         }
         return sb.ToString();
     }
+
+    public CardDefinition GetRandomCard()
+    {
+        if (cardsDefs == null || cardsDefs.Count == 0)
+            return null;
+        return cardsDefs[Random.Range(0, cardsDefs.Count)];
+    }
+
+    public CardDefinition GetRandomCardByRarity(Rarity rarity)
+    {
+        if (cardsDefs == null || cardsDefs.Count == 0)
+            return null;
+        var pool = new List<CardDefinition>();
+        foreach (var card in cardsDefs)
+        {
+            if (card.rarity == rarity)
+                pool.Add(card);
+        }
+        if (pool.Count == 0)
+            return GetRandomCard();
+        return pool[Random.Range(0, pool.Count)];
+    }
 }

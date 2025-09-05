@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(BoxCollider))]
 public class IsoPlayerMovement : MonoBehaviour
 {
+    public static IsoPlayerMovement Instance { get; private set; }
+
     [SerializeField]
     private float moveSpeed = 5f;
 
@@ -33,6 +35,12 @@ public class IsoPlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         inputActions = new InputSystem_Actions();
         box = GetComponent<BoxCollider>();
         playerInteractor = GetComponent<PlayerInteractor>();

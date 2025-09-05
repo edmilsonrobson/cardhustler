@@ -48,12 +48,6 @@ public class CardGenerator
 
     public List<CardDefinition> GenerateCardPool(int count = 60)
     {
-        var rarityProportion = new Dictionary<Rarity, int>();
-        rarityProportion[Rarity.Common] = 50;
-        rarityProportion[Rarity.Rare] = 35;
-        rarityProportion[Rarity.Epic] = 10;
-        rarityProportion[Rarity.Legendary] = 5;
-
         var cardPool = new List<CardDefinition>();
 
         var commonsToGenerate = (int)(count * 0.6);

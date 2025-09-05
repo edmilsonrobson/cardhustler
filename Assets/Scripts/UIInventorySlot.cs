@@ -43,6 +43,7 @@ public class UIInventorySlot : MonoBehaviour
     public void OnPointerClick()
     {
         Debug.Log($"Clicked on item: {item.itemDef.displayName}");
+        item.OnInventoryUse();
     }
 
     public void OnPointerEnter()

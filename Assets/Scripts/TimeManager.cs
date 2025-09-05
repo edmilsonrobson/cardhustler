@@ -35,6 +35,7 @@ public class TimeManager : MonoBehaviour
     void Start()
     {
         StartNewDay(1);
+        AnnouncementManager.Instance.ShowAnnouncement("tutorial-hello");
     }
 
     public void StartNewDay(int dayNumber)

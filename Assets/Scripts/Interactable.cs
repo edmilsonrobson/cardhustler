@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum InteractKind
@@ -19,6 +20,8 @@ public class Interactable : MonoBehaviour
 
     [Header("Optional - where the player should look at")]
     public Transform focusPoint; // if null, uses this.transform
+
+    public List<MeshRenderer> meshRenderersToOutline;
 
     public string GetPrompt()
     {
@@ -43,10 +46,10 @@ public class Interactable : MonoBehaviour
     public virtual void OnInteractStart()
     {
         Debug.Log($"Interact started with {name}");
-        var outline = gameObject.AddComponent<Outline>();
-        outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineColor = Color.white;
-        outline.OutlineWidth = 40f;
+        foreach (var meshRenderer in meshRenderersToOutline)
+        {
+            meshRenderer.renderingLayerMask |= (1u << 1); // Enable Light Layer 1
+        }
 
         UIManager.Instance.ShowActionBubble(transform, GetPrompt(), "E");
     }
@@ -54,7 +57,11 @@ public class Interactable : MonoBehaviour
     public virtual void OnInteractEnd()
     {
         Debug.Log($"Interact ended with {name}");
-        Destroy(gameObject.GetComponent<Outline>());
+
+        foreach (var meshRenderer in meshRenderersToOutline)
+        {
+            meshRenderer.renderingLayerMask &= ~(1u << 1); // Disable Light Layer 1
+        }
 
         UIManager.Instance.HideActionBubble();
     }

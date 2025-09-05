@@ -68,17 +68,14 @@ public class ShippingBoxInteractable : Interactable
         if (!IsInteractable)
             return;
 
+        base.OnInteractStart();
+
         Debug.Log("Interact started with Shipping Box");
-        UIManager.Instance.ShowActionBubble(transform, "Open", "E");
     }
 
     public override void OnInteractEnd()
     {
-        if (!IsInteractable)
-            return;
-
-        Debug.Log("Interact ended with Shipping Box");
-        UIManager.Instance.HideActionBubble();
+        base.OnInteractEnd();
     }
 
     private void HideShippingBox()

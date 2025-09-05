@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 260ec63001dcd9340a70aa711fb55acb, type: 3}
+  m_Name: FirstSteps1
+  m_EditorClassIdentifier: Assembly-CSharp::AnnouncementSO
+  id: tutorial-computador
+  h1: Primeiros Passos - 1
+  h2: Hora de lucrar!
+  bodyText: "Abrir pacotinho \xE9 irado, mas agora seu pr\xF3ximo passo \xE9 vender
+    suas cartinhas na internet, lucrar e comprar mais pacotinhos.\n\nV\xE1 at\xE9
+    o computador para fazer isso."
+  sideImage: {fileID: 21300000, guid: 3a4abd496da9d499abefed78678ada9d, type: 3}
+  ctaText: Computador, OK, entendi!

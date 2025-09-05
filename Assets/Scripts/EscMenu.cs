@@ -29,6 +29,7 @@ public class EscMenu : MonoBehaviour
         seq.Append(transform.DOScale(1f, 0.1f).SetEase(Ease.OutBack)); // settle
 
         IsOpen = true;
+        IsoPlayerMovement.Instance.BlockPlayerActions();
     }
 
     public void Close()
@@ -42,6 +43,7 @@ public class EscMenu : MonoBehaviour
             canvasGroup.blocksRaycasts = false;
             canvasGroup.interactable = false;
             IsOpen = false;
+            IsoPlayerMovement.Instance.UnblockPlayerActions();
         });
     }
 

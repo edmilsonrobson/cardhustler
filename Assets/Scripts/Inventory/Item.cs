@@ -8,4 +8,8 @@ public class Item
         this.itemDef = itemDef;
         this.count = count;
     }
+
+    public void OnInventoryUse() {
+
+    }
 }
