@@ -13,6 +13,9 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
     public TextMeshProUGUI atkText;
     public TextMeshProUGUI defText;
 
+    public TextMeshProUGUI rarityText;
+    public TextMeshProUGUI creatureTypeAndElementText;
+
     private CanvasGroup canvasGroup;
 
     [SerializeField]
@@ -72,6 +75,16 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
     public void SetDefText(string text)
     {
         defText.text = text;
+    }
+
+    public void SetRarityText(string text)
+    {
+        rarityText.text = text;
+    }
+
+    public void SetCreatureTypeAndElementTypeText(string text)
+    {
+        creatureTypeAndElementText.text = text;
     }
 
     public void HideNonBackgroundContent()
