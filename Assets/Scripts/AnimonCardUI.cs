@@ -16,6 +16,8 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
     public TextMeshProUGUI rarityText;
     public TextMeshProUGUI creatureTypeAndElementText;
 
+    private CardDefinition cardDefinition;
+
     private CanvasGroup canvasGroup;
 
     [SerializeField]
@@ -55,6 +57,16 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
     public CanvasGroup GetCanvasGroup()
     {
         return canvasGroup;
+    }
+
+    public void SetCardDefinition(CardDefinition cardDefinition)
+    {
+        this.cardDefinition = cardDefinition;
+    }
+
+    public CardDefinition GetCardDefinition()
+    {
+        return cardDefinition;
     }
 
     public void SetBackgroundSprite(Sprite sprite)

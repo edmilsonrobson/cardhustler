@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PackOpeningManager : MonoBehaviour
 {
+    public static PackOpeningManager Instance { get; private set; }
     public AnimonCardUI animonCardUI;
 
     private CardGenerator cardGenerator;
@@ -22,19 +25,30 @@ public class PackOpeningManager : MonoBehaviour
 
     private int boosterPackToOpen = 0;
 
+    [SerializeField]
+    private Camera UICamera;
+
+    [SerializeField]
+    private Button nextPackOrCloseButton;
+
+    [SerializeField]
+    private TextMeshProUGUI cardPriceText;
+
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         cardGenerator = new CardGenerator(new CardSet("Base Set", "BASE", CardSetType.Core));
         cardGenerator.PopulateSet();
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            OnBoosterPackUse();
-        }
-    }
+    void Update() { }
 
     public void OnCardPackOpeningPanelClick()
     {
@@ -64,6 +78,7 @@ public class PackOpeningManager : MonoBehaviour
             currentCard.transform.DORotate(new Vector3(0, 0, -25f), 0.25f).SetEase(Ease.OutSine)
         );
         seq.Join(currentCard.GetCanvasGroup().DOFade(0, 0.25f).SetEase(Ease.OutSine));
+        seq.Join(cardPriceText.GetComponent<CanvasGroup>().DOFade(0, 0.1f).SetEase(Ease.OutSine));
         seq.OnComplete(() =>
         {
             cardUIs.Remove(currentCard);
@@ -85,27 +100,96 @@ public class PackOpeningManager : MonoBehaviour
 
         if (boosterPackToOpen == 0)
         {
+            nextPackOrCloseButton.GetComponentInChildren<TextMeshProUGUI>().text = "Close";
+        }
+        else
+        {
+            nextPackOrCloseButton.GetComponentInChildren<TextMeshProUGUI>().text =
+                $"Next Pack ({boosterPackToOpen} left)";
+        }
+        nextPackOrCloseButton.GetComponent<CanvasGroup>().DOFade(1, 0.3f);
+        InventoryManager.Instance.CanOpenInventoryPanel = true;
+    }
+
+    public void OnNextPackOrCloseButtonClick()
+    {
+        if (boosterPackToOpen == 0)
+        {
+            nextPackOrCloseButton
+                .GetComponent<CanvasGroup>()
+                .DOFade(0, 0.3f)
+                .OnComplete(() => packOpeningPanel.gameObject.SetActive(false));
             IsoPlayerMovement.Instance.UnblockPlayerActions();
+        }
+        else
+        {
+            OnBoosterPackUse();
+            nextPackOrCloseButton.GetComponent<CanvasGroup>().DOFade(0, 0.3f);
         }
     }
 
     public void RevealNextCard()
     {
-        // use dotween for a nice flip animation
         var topmostCard = cardUIs[cardUIs.Count - 1];
-        topmostCard.ShowNonBackgroundContent();
-        topmostCard
-            .transform.DORotate(new Vector3(0, 0, 0), 0.3f)
-            .SetEase(Ease.OutQuad)
-            .OnComplete(() =>
+        bool isRareOrBetter = false;
+        if (topmostCard.GetCardDefinition() != null)
+        {
+            var rarity = topmostCard.GetCardDefinition().rarity;
+            if (rarity == Rarity.Rare || rarity == Rarity.Epic || rarity == Rarity.Legendary)
             {
-                canClickToReveal = true;
-            });
+                isRareOrBetter = true;
+            }
+        }
+
+        topmostCard.ShowNonBackgroundContent();
+
+        cardPriceText.text = topmostCard.GetCardDefinition().getRandomPrice();
+        if (isRareOrBetter)
+        {
+            ParticleManager.instance.PlayMagicAuraParticle(
+                topmostCard.transform.position,
+                packOpeningPanel
+            );
+            // CameraShakeManager.instance.MediumShake();
+            var zoomEffect = 60f;
+            var camTransform = UICamera.transform;
+            var originalPos = camTransform.position;
+            var zoomedPos = new Vector3(originalPos.x, originalPos.y, originalPos.z + zoomEffect);
+
+            camTransform.position = zoomedPos;
+            topmostCard
+                .transform.DORotate(new Vector3(0, 0, 0), 0.3f)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    camTransform
+                        .DOMoveZ(originalPos.z, 0.5f)
+                        .SetEase(Ease.OutCubic)
+                        .OnComplete(() =>
+                        {
+                            canClickToReveal = true;
+                            cardPriceText.GetComponent<CanvasGroup>().DOFade(1, 0.1f);
+                        });
+                });
+        }
+        else
+        {
+            topmostCard
+                .transform.DORotate(new Vector3(0, 0, 0), 0.3f)
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    canClickToReveal = true;
+                    cardPriceText.GetComponent<CanvasGroup>().DOFade(1, 0.1f);
+                });
+        }
     }
 
-    public void OnBoosterPackUse()
+    public void OnBoosterPackUse(int quantity = 1)
     {
-        boosterPackToOpen = 1;
+        InventoryManager.Instance.CanOpenInventoryPanel = false;
+        this.boosterPackToOpen = quantity;
+        packOpeningPanel.gameObject.SetActive(true);
         IsoPlayerMovement.Instance.BlockPlayerActions();
         revealedFirstCard = false;
         canClickToReveal = false;
@@ -131,6 +215,7 @@ public class PackOpeningManager : MonoBehaviour
             cardUI.SetCreatureTypeAndElementTypeText(
                 card.tribe.ToString() + " " + card.element.ToString()
             );
+            cardUI.SetCardDefinition(card);
             cardUI.HideNonBackgroundContent();
             cardUIs.Insert(0, cardUI);
         }

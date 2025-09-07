@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -10,6 +11,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private InventoryPanel inventoryPanel;
 
+    [SerializeField]
     private List<Item> items;
 
     [SerializeField]
@@ -20,6 +22,8 @@ public class InventoryManager : MonoBehaviour
 
     [SerializeField]
     private BackpackImage backpackImage;
+
+    public bool CanOpenInventoryPanel { get; set; } = true;
 
     void Awake()
     {
@@ -40,9 +44,30 @@ public class InventoryManager : MonoBehaviour
         backpackImage.GetComponent<EffectUtils2D>().Jiggle();
     }
 
+    public void RemoveItem(string itemId, int count = 1)
+    {
+        Debug.Log($"Removing item with id '{itemId}' and count '{count}'");
+        var item = items.Find(item => item.itemDef.Id == itemId);
+        if (item == null)
+        {
+            Debug.Log($"Item with id '{itemId}' not found");
+            throw new System.Exception($"Item with id '{itemId}' not found");
+        }
+        item.count -= count;
+        if (item.count <= 0)
+        {
+            Debug.Log($"Removing item with id '{itemId}' completely");
+            items.Remove(item);
+        }
+    }
+
+    public void LogItems()
+    {
+        Debug.Log("Items: " + string.Join(", ", items));
+    }
+
     public BackpackImage GetBackpackImage()
     {
-        Debug.Log(backpackImage);
         return backpackImage;
     }
 
@@ -63,7 +88,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (inventoryPanel.IsOpen)
             {
-                CloseInventoryPanel();
+                _ = CloseInventoryPanel();
             }
             else
             {
@@ -74,26 +99,17 @@ public class InventoryManager : MonoBehaviour
 
     public void OpenInventoryPanel()
     {
+        if (!CanOpenInventoryPanel)
+            return;
+
         inventoryPanel.OpenInventoryPanel();
         inventoryPanel.UpdateWithItems(items);
         isoPlayerMovement.BlockPlayerActions();
     }
 
-    public void CloseInventoryPanel()
+    public async Task CloseInventoryPanel()
     {
-        inventoryPanel.CloseInventoryPanel();
         isoPlayerMovement.UnblockPlayerActions();
-    }
-
-    public void AddBoosterPack(int count)
-    {
-        boosterPackCount += count;
-        UIManager.Instance.ShowBoosterPackPanel(boosterPackCount);
-    }
-
-    public void RemoveBoosterPack(int count)
-    {
-        boosterPackCount -= count;
-        UIManager.Instance.SetBoosterPackCount(boosterPackCount);
+        await inventoryPanel.CloseInventoryPanel();
     }
 }

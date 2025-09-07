@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -25,10 +26,19 @@ public class InventoryPanel : MonoBehaviour
 
     public void UpdateWithItems(List<Item> items)
     {
+        Debug.Log($"Updating inventory panel with {items.Count} items");
+
+        Debug.Log("Items: " + string.Join(", ", items));
         if (items.Count > inventorySlots.Count)
         {
             Debug.LogError("Not enough inventory slots");
             return;
+        }
+
+        // reset all slots
+        foreach (var slot in inventorySlots)
+        {
+            slot.RemoveItem();
         }
 
         for (int i = 0; i < items.Count; i++)
@@ -54,7 +64,7 @@ public class InventoryPanel : MonoBehaviour
         IsOpen = true;
     }
 
-    public void CloseInventoryPanel()
+    public async Task CloseInventoryPanel()
     {
         // fade + shrink
         Sequence seq = DOTween.Sequence();
@@ -67,5 +77,7 @@ public class InventoryPanel : MonoBehaviour
             canvasGroup.interactable = false;
             IsOpen = false;
         });
+
+        await seq.AsyncWaitForCompletion();
     }
 }

@@ -7,9 +7,7 @@ public class DateTimePanel : MonoBehaviour
     private TextMeshProUGUI dateText;
 
     [SerializeField]
-    private TextMeshProUGUI timeText;
-
-    private bool colonVisible = true;
+    private TextMeshProUGUI timeText;    
 
     private void Start()
     {

@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 namespace FGUIStarter
 {
@@ -12,7 +12,6 @@ namespace FGUIStarter
         RectTransform textRect;
         Vector2 originalTextPos;
 
-        bool isHeld;
         protected override void Awake()
         {
             base.Awake();
@@ -23,14 +22,12 @@ namespace FGUIStarter
         public override void OnPointerDown(PointerEventData eventData)
         {
             base.OnPointerDown(eventData);
-            isHeld = true;
             ApplyPressedVisual();
         }
 
         public override void OnPointerUp(PointerEventData eventData)
         {
             base.OnPointerUp(eventData);
-            isHeld = false;
             ApplyNormalVisual();
         }
 
@@ -39,7 +36,7 @@ namespace FGUIStarter
             if (textRect != null)
             {
                 float height = ((RectTransform)transform).rect.height;
-                float offset = height - (height * 0.86718f);//calculation for 128x128 sprite
+                float offset = height - (height * 0.86718f); //calculation for 128x128 sprite
                 //use this code below instead of the code in line 40, in case the offset of the text doesn't make sense with respect to the thickness of the button or gameview dimensions:
                 //float offset = height - (height * 0.86718f) - insertYourCustomOffset;
                 //Example: float offset = height - (height * 0.86718f) - 10f;
@@ -62,12 +59,10 @@ namespace FGUIStarter
             {
                 ApplyPressedVisual();
             }
-
             else
             {
                 ApplyNormalVisual();
             }
         }
-
     }
 }
