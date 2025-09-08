@@ -173,7 +173,7 @@ public class PackOpeningManager : MonoBehaviour
 
         topmostCard.ShowNonBackgroundContent();
 
-        cardPriceText.text = topmostCard.GetCardDefinition().getRandomPrice();
+        cardPriceText.text = topmostCard.GetCardDefinition().GetPrice();
         if (isRareOrBetter)
         {
             ParticleManager.instance.PlayMagicAuraParticle(
@@ -193,7 +193,7 @@ public class PackOpeningManager : MonoBehaviour
                 .OnComplete(() =>
                 {
                     camTransform
-                        .DOMoveZ(originalPos.z, 0.5f * animationVelocityMultiplier)
+                        .DOMoveZ(originalPos.z, 0.5f)
                         .SetEase(Ease.OutCubic)
                         .OnComplete(() =>
                         {

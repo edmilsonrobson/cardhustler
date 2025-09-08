@@ -27,6 +27,8 @@ public class ParticleManager : MonoBehaviour
             parent.transform
         );
         particleInstance.transform.localPosition = new Vector3(0, 0, -238);
+        var main = particleInstance.main;
+        main.simulationSpeed = 0.5f;
         particleInstance.Play();
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public class CardGenerator
 {
@@ -45,7 +46,20 @@ public class CardGenerator
         card.attack = random.Next(0, 10) + random.Next(0, rarityBonus + 1);
         card.health = random.Next(0, 10) + random.Next(0, rarityBonus + 1);
 
+        card.basePrice = getBasePrice(rarity);
+
         return card;
+    }
+
+    private float getBasePrice(Rarity rarity)
+    {
+        if (rarity == Rarity.Common)
+            return 1f + Random.Range(-0.4f, 0.4f);
+        if (rarity == Rarity.Rare)
+            return 3f + Random.Range(-0.3f, 0.3f);
+        if (rarity == Rarity.Epic)
+            return 20f + Random.Range(-0.2f, 0.2f);
+        return 100f + Random.Range(-0.1f, 0.1f);
     }
 
     public List<CardDefinition> GenerateCardPool(int count = 60)

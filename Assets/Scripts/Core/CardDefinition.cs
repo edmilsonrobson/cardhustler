@@ -16,6 +16,9 @@ public class CardDefinition
     public int attack;
     public int health;
 
+    public List<MarketForceType> marketForces = new List<MarketForceType>();
+    public float basePrice;
+
     public string ToShortString()
     {
         var rarityToChar = new Dictionary<Rarity, string>
@@ -28,26 +31,25 @@ public class CardDefinition
         return $"[{set.code} [{rarityToChar[rarity]}] {cost} {name} - {tribe} {element} - {attack}/{health}";
     }
 
-    public string getRandomPrice()
+    public List<string> GetMarketForceDescriptions()
     {
-        float basePrice = 0f;
-        switch (rarity)
+        var descriptions = new List<string>();
+        foreach (var marketForce in marketForces)
         {
-            case Rarity.Common:
-                basePrice = 1f;
-                break;
-            case Rarity.Rare:
-                basePrice = 3f;
-                break;
-            case Rarity.Epic:
-                basePrice = 20f;
-                break;
-            case Rarity.Legendary:
-                basePrice = 100f;
-                break;
+            descriptions.Add(MarketForceHelper.Descriptions[marketForce]);
         }
-        float variance = Random.Range(-0.1f, 0.1f);
-        float finalPrice = basePrice + basePrice * variance;
+        return descriptions;
+    }
+
+    public string GetPrice()
+    {
+        float marketForceMultiplier = 1f;
+        foreach (var marketForce in marketForces)
+        {
+            marketForceMultiplier += 1 + MarketForceHelper.Values[marketForce] / 100f;
+        }
+
+        float finalPrice = basePrice * marketForceMultiplier;
         return "$" + finalPrice.ToString("F2");
     }
 }

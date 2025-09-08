@@ -41,7 +41,7 @@ public class CardMouseOverPopup : MonoBehaviour
         if (cardDefinition == null)
             return;
         nameText.text = cardDefinition.name;
-        priceText.text = cardDefinition.getRandomPrice();
+        priceText.text = cardDefinition.GetPrice();
     }
 
     public void ShowPopUpOver(RectTransform target, Vector2 offset)

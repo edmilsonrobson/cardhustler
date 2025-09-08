@@ -1,6 +1,6 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class UIManager : MonoBehaviour
 {
@@ -54,7 +54,15 @@ public class UIManager : MonoBehaviour
 
     public void ToggleComputerMonitor()
     {
-        computerMonitor.gameObject.SetActive(!computerMonitor.gameObject.activeSelf);
+        var canvasGroup = computerMonitor.GetComponent<CanvasGroup>();
+        if (canvasGroup.alpha > 0)
+        {
+            computerMonitor.CloseDesktopScreen();            
+        }
+        else
+        {
+            computerMonitor.OpenDesktopScreen();
+        }
     }
 
     public void ShowActionBubble(Transform position, string text, string shortcut)
