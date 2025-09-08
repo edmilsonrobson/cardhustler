@@ -2,6 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+[RequireComponent(typeof(CanvasGroup))]
 public class EffectUtils2D : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField]

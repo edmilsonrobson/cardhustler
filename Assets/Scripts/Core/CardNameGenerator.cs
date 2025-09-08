@@ -127,7 +127,7 @@ public static class CardNameGenerator
         }
 
         // Add epithet for higher rarity
-        if (rarity >= Rarity.Rare && rng.NextDouble() < 0.85)
+        if (rarity >= Rarity.Rare)
         {
             string epithet = rarity switch
             {
@@ -140,7 +140,7 @@ public static class CardNameGenerator
                 && (core.Length + 1 + epithet.Length) <= Math.Max(maxLen + 10, 22)
             )
             {
-                return $"{core} {epithet}";
+                return $"{core}, {epithet}";
             }
         }
 

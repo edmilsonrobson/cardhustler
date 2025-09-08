@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -34,6 +35,9 @@ public class PackOpeningManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI cardPriceText;
 
+    [SerializeField]
+    private float animationVelocityMultiplier = 1f;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -48,13 +52,25 @@ public class PackOpeningManager : MonoBehaviour
         cardGenerator.PopulateSet();
     }
 
-    void Update() { }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("Adding 3 booster pack cards to collection");
+            for (int i = 0; i < 3; i++)
+            {
+                var pack = new BoosterPack(cardGenerator.set);
+                var cards = pack.CrackOpen();
+                foreach (var card in cards)
+                {
+                    CardInventoryManager.Instance.AddCardToCollection(new CardInstance(card));
+                }
+            }
+        }
+    }
 
     public void OnCardPackOpeningPanelClick()
     {
-        Debug.Log("Clickity click!");
-        Debug.Log("Can click to reveal: " + canClickToReveal);
-        Debug.Log("Revealed first card: " + revealedFirstCard);
         if (!canClickToReveal)
             return;
 
@@ -71,14 +87,29 @@ public class PackOpeningManager : MonoBehaviour
         var seq = DOTween.Sequence();
         seq.Append(
             currentCard
-                .transform.DOLocalMoveX(currentCard.transform.localPosition.x + 150f, 0.25f)
+                .transform.DOLocalMoveX(
+                    currentCard.transform.localPosition.x + 150f,
+                    0.25f * animationVelocityMultiplier
+                )
                 .SetEase(Ease.OutSine)
         );
         seq.Join(
-            currentCard.transform.DORotate(new Vector3(0, 0, -25f), 0.25f).SetEase(Ease.OutSine)
+            currentCard
+                .transform.DORotate(new Vector3(0, 0, -25f), 0.25f * animationVelocityMultiplier)
+                .SetEase(Ease.OutSine)
         );
-        seq.Join(currentCard.GetCanvasGroup().DOFade(0, 0.25f).SetEase(Ease.OutSine));
-        seq.Join(cardPriceText.GetComponent<CanvasGroup>().DOFade(0, 0.1f).SetEase(Ease.OutSine));
+        seq.Join(
+            currentCard
+                .GetCanvasGroup()
+                .DOFade(0, 0.25f * animationVelocityMultiplier)
+                .SetEase(Ease.OutSine)
+        );
+        seq.Join(
+            cardPriceText
+                .GetComponent<CanvasGroup>()
+                .DOFade(0, 0.1f * animationVelocityMultiplier)
+                .SetEase(Ease.OutSine)
+        );
         seq.OnComplete(() =>
         {
             cardUIs.Remove(currentCard);
@@ -97,7 +128,6 @@ public class PackOpeningManager : MonoBehaviour
     public void EndBoosterPackOpening()
     {
         boosterPackToOpen--;
-
         if (boosterPackToOpen == 0)
         {
             nextPackOrCloseButton.GetComponentInChildren<TextMeshProUGUI>().text = "Close";
@@ -158,37 +188,45 @@ public class PackOpeningManager : MonoBehaviour
 
             camTransform.position = zoomedPos;
             topmostCard
-                .transform.DORotate(new Vector3(0, 0, 0), 0.3f)
+                .transform.DORotate(new Vector3(0, 0, 0), 0.3f * animationVelocityMultiplier)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() =>
                 {
                     camTransform
-                        .DOMoveZ(originalPos.z, 0.5f)
+                        .DOMoveZ(originalPos.z, 0.5f * animationVelocityMultiplier)
                         .SetEase(Ease.OutCubic)
                         .OnComplete(() =>
                         {
                             canClickToReveal = true;
-                            cardPriceText.GetComponent<CanvasGroup>().DOFade(1, 0.1f);
+                            cardPriceText
+                                .GetComponent<CanvasGroup>()
+                                .DOFade(1, 0.1f * animationVelocityMultiplier);
                         });
                 });
         }
         else
         {
             topmostCard
-                .transform.DORotate(new Vector3(0, 0, 0), 0.3f)
+                .transform.DORotate(new Vector3(0, 0, 0), 0.3f * animationVelocityMultiplier)
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() =>
                 {
                     canClickToReveal = true;
-                    cardPriceText.GetComponent<CanvasGroup>().DOFade(1, 0.1f);
+                    cardPriceText
+                        .GetComponent<CanvasGroup>()
+                        .DOFade(1, 0.1f * animationVelocityMultiplier);
                 });
         }
     }
 
-    public void OnBoosterPackUse(int quantity = 1)
+    public void SetBoosterPackToOpen(int quantity)
+    {
+        this.boosterPackToOpen = quantity;
+    }
+
+    public void OnBoosterPackUse()
     {
         InventoryManager.Instance.CanOpenInventoryPanel = false;
-        this.boosterPackToOpen = quantity;
         packOpeningPanel.gameObject.SetActive(true);
         IsoPlayerMovement.Instance.BlockPlayerActions();
         revealedFirstCard = false;
@@ -198,6 +236,7 @@ public class PackOpeningManager : MonoBehaviour
         var cards = boosterPack.CrackOpen();
         foreach (var card in cards)
         {
+            CardInventoryManager.Instance.AddCardToCollection(new CardInstance(card));
             var cardUI = Instantiate(animonCardUI, packOpeningPanel.transform);
             cardUI.GetCanvasGroup().alpha = 0;
 

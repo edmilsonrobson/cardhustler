@@ -44,6 +44,19 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
         }
     }
 
+    public void SetCardInformation(CardInstance cardInstance)
+    {
+        SetCardDefinition(cardInstance.cardDef);
+        SetMainSprite(cardInstance.cardDef.image);
+        SetNameText(cardInstance.cardDef.name);
+        SetAtkText(cardInstance.cardDef.attack.ToString());
+        SetDefText(cardInstance.cardDef.health.ToString());
+        SetRarityText(cardInstance.cardDef.rarity.ToString());
+        SetCreatureTypeAndElementTypeText(
+            cardInstance.cardDef.tribe.ToString() + " " + cardInstance.cardDef.element.ToString()
+        );
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         OnCardPointerDown?.Invoke(this);

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class Item
 {
@@ -13,12 +14,16 @@ public class Item
 
     public async Task OnInventoryUse()
     {
+        Debug.Log("OnInventoryUse: " + itemDef.displayName);
         await InventoryManager.Instance.CloseInventoryPanel();
 
         if (itemDef.kind == ItemKind.BoosterPack)
         {
-            PackOpeningManager.Instance.OnBoosterPackUse(count);
+            Debug.Log("OnInventoryUse: BoosterPack");
+            PackOpeningManager.Instance.SetBoosterPackToOpen(count);
+            PackOpeningManager.Instance.OnBoosterPackUse();
             InventoryManager.Instance.RemoveItem(this.itemDef.Id, this.count);
+            Debug.Log("OnInventoryUse: BoosterPack removed");
         }
     }
 

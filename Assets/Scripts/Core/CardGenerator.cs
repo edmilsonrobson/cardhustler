@@ -21,10 +21,12 @@ public class CardGenerator
         return set;
     }
 
-    private CardDefinition GenerateCard(Rarity rarity, CardTribe tribe, CardElement element)
+    private CardDefinition GenerateCard(Rarity rarity, CardTribe tribe, CardElement element, int id)
     {
         CardDefinition card = new CardDefinition();
-        card.name = GenerateCardName();
+        card.id = set.code + "-" + id;
+        card.name = GenerateCardName(rarity, tribe, element);
+        card.image = SpritePool.RandomSprite();
         card.set = set;
         card.rarity = rarity;
         card.tribe = tribe;
@@ -54,31 +56,32 @@ public class CardGenerator
         var raresToGenerate = (int)(count * 0.3);
         var epicsToGenerate = (int)(count * 0.1);
         var legendsToGenerate = (int)(count * 0.05);
+        var intId = 1;
 
         for (int i = 0; i < commonsToGenerate; i++)
         {
             var tribe = GenerateCardTribe();
             var element = GenerateCardElement();
-            cardPool.Add(GenerateCard(Rarity.Common, tribe, element));
+            cardPool.Add(GenerateCard(Rarity.Common, tribe, element, intId++));
         }
         for (int i = 0; i < raresToGenerate; i++)
         {
             var tribe = GenerateCardTribe();
             var element = GenerateCardElement();
-            cardPool.Add(GenerateCard(Rarity.Rare, tribe, element));
+            cardPool.Add(GenerateCard(Rarity.Rare, tribe, element, intId++));
         }
         for (int i = 0; i < epicsToGenerate; i++)
         {
             var tribe = GenerateCardTribe();
             var element = GenerateCardElement();
-            cardPool.Add(GenerateCard(Rarity.Epic, tribe, element));
+            cardPool.Add(GenerateCard(Rarity.Epic, tribe, element, intId++));
         }
 
         for (int i = 0; i < legendsToGenerate; i++)
         {
             var tribe = GenerateCardTribe();
             var element = GenerateCardElement();
-            cardPool.Add(GenerateCard(Rarity.Legendary, tribe, element));
+            cardPool.Add(GenerateCard(Rarity.Legendary, tribe, element, intId++));
         }
 
         return cardPool;
@@ -96,8 +99,8 @@ public class CardGenerator
         return (CardElement)values.GetValue(new System.Random().Next(values.Length));
     }
 
-    private string GenerateCardName()
+    private string GenerateCardName(Rarity rarity, CardTribe tribe, CardElement element)
     {
-        return CardNameGenerator.GenerateCardName(CardElement.Fire);
+        return CardNameGenerator.GenerateCardName(element: element, rarity: rarity);
     }
 }

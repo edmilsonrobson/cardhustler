@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class CardDefinition
 {
+    public string id; // e.g BASE-001
     public string name;
     public Sprite image;
     public Rarity rarity;
