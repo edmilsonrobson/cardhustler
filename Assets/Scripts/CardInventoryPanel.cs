@@ -43,7 +43,7 @@ public class CardInventoryPanel : MonoBehaviour
                 OpenCardInventoryPanel();
             }
         }
-    }
+}
 
     public void OpenCardInventoryPanel()
     {

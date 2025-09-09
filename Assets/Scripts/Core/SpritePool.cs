@@ -14,12 +14,12 @@ public static class SpritePool
         _loaded = true;
     }
 
-    public static Sprite RandomSprite()
+    public static string RandomSprite()
     {
         EnsureLoaded();
         if (_pool == null || _pool.Length == 0)
             return null;
-        return _pool[Random.Range(0, _pool.Length)];
+        return _pool[Random.Range(0, _pool.Length)].name;
     }
 
     public static Sprite[] All

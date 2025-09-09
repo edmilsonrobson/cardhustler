@@ -1,7 +1,11 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class AnimonCardHolder : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class AnimonCardHolder
+    : MonoBehaviour,
+        IPointerEnterHandler,
+        IPointerExitHandler,
+        IPointerClickHandler
 {
     private CanvasGroup canvasGroup;
 
@@ -33,5 +37,13 @@ public class AnimonCardHolder : MonoBehaviour, IPointerEnterHandler, IPointerExi
         {
             CardMouseOverPopup.Instance.HidePopUp();
         }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        CardInspectorManager.Instance.OpenCardInspector(
+            GetComponentInChildren<AnimonCardUI>().GetCardInstance()
+        );
+        UISoundManager.instance.PlayClickSound();
     }
 }

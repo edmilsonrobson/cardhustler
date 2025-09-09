@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CardInventoryManager : MonoBehaviour
@@ -21,7 +22,6 @@ public class CardInventoryManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
-        cards = new List<CardInstance>();
     }
 
     public void AddCardToCollection(CardInstance card)
@@ -42,5 +42,20 @@ public class CardInventoryManager : MonoBehaviour
     public List<CardInstance> GetCards()
     {
         return cards;
+    }
+
+    public int GetCardCount(CardDefinition cardDef)
+    {
+        return cards.Count(card => card.cardDef.id == cardDef.id);
+    }
+
+    public void Save()
+    {
+        SlotSave.SaveValue("cards", cards);
+    }
+
+    public void Load()
+    {
+        cards = SlotSave.LoadValue("cards", new List<CardInstance>());
     }
 }

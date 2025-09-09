@@ -184,6 +184,10 @@ MonoBehaviour:
   rarityText: {fileID: 4349470556020459426}
   creatureTypeAndElementText: {fileID: 4225981754683505812}
   backImage: {fileID: 2849629121529909561}
+  commonBackgroundImage: {fileID: 21300000, guid: 83d221a39361abc4f81f9a212731a224, type: 3}
+  rareBackgroundImage: {fileID: 21300000, guid: ad4c2038da118054bbd7eb8764be59d6, type: 3}
+  epicBackgroundImage: {fileID: 21300000, guid: ad57eaf5e4e984d47aae4ec718a9a90a, type: 3}
+  legendaryBackgroundImage: {fileID: 21300000, guid: fd362e91ef09b234ab0d869fb09df45b, type: 3}
 --- !u!225 &9090839758571501053
 CanvasGroup:
   m_ObjectHideFlags: 0

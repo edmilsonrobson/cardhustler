@@ -18,10 +18,24 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
 
     private CardDefinition cardDefinition;
 
+    private CardInstance cardInstance;
+
     private CanvasGroup canvasGroup;
 
     [SerializeField]
     private Image backImage;
+
+    [SerializeField]
+    private Sprite commonBackgroundImage;
+
+    [SerializeField]
+    private Sprite rareBackgroundImage;
+
+    [SerializeField]
+    private Sprite epicBackgroundImage;
+
+    [SerializeField]
+    private Sprite legendaryBackgroundImage;
 
     public event Action<AnimonCardUI> OnCardPointerDown;
 
@@ -46,8 +60,9 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
 
     public void SetCardInformation(CardInstance cardInstance)
     {
+        this.cardInstance = cardInstance;
         SetCardDefinition(cardInstance.cardDef);
-        SetMainSprite(cardInstance.cardDef.image);
+        SetMainSprite(SpriteProvider.GetSprite(cardInstance.cardDef.imageKey));
         SetNameText(cardInstance.cardDef.name);
         SetAtkText(cardInstance.cardDef.attack.ToString());
         SetDefText(cardInstance.cardDef.health.ToString());
@@ -55,6 +70,22 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
         SetCreatureTypeAndElementTypeText(
             cardInstance.cardDef.tribe.ToString() + " " + cardInstance.cardDef.element.ToString()
         );
+
+        switch (cardInstance.cardDef.rarity)
+        {
+            case Rarity.Common:
+                backgroundImage.sprite = commonBackgroundImage;
+                break;
+            case Rarity.Rare:
+                backgroundImage.sprite = rareBackgroundImage;
+                break;
+            case Rarity.Epic:
+                backgroundImage.sprite = epicBackgroundImage;
+                break;
+            case Rarity.Legendary:
+                backgroundImage.sprite = legendaryBackgroundImage;
+                break;
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
@@ -75,6 +106,11 @@ public class AnimonCardUI : MonoBehaviour, IPointerDownHandler
     public void SetCardDefinition(CardDefinition cardDefinition)
     {
         this.cardDefinition = cardDefinition;
+    }
+
+    public CardInstance GetCardInstance()
+    {
+        return cardInstance;
     }
 
     public CardDefinition GetCardDefinition()

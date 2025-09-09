@@ -1,13 +1,14 @@
 using System.Collections.Generic;
+using System.Globalization;
 using UnityEngine;
 
 public class CardDefinition
 {
     public string id; // e.g BASE-001
     public string name;
-    public Sprite image;
+    public string imageKey;
     public Rarity rarity;
-    public CardSet set;
+    public string setCode;
 
     public CardTribe tribe;
     public CardElement element;
@@ -28,7 +29,7 @@ public class CardDefinition
             { Rarity.Epic, "E" },
             { Rarity.Legendary, "L" },
         };
-        return $"[{set.code} [{rarityToChar[rarity]}] {cost} {name} - {tribe} {element} - {attack}/{health}";
+        return $"[{setCode} [{rarityToChar[rarity]}] {cost} {name} - {tribe} {element} - {attack}/{health}";
     }
 
     public List<string> GetMarketForceDescriptions()
@@ -41,15 +42,19 @@ public class CardDefinition
         return descriptions;
     }
 
-    public string GetPrice()
+    public string GetPriceString()
+    {
+        var finalPrice = GetPrice();
+        return "$" + finalPrice.ToString("F2", CultureInfo.InvariantCulture);
+    }
+
+    public float GetPrice()
     {
         float marketForceMultiplier = 1f;
         foreach (var marketForce in marketForces)
         {
             marketForceMultiplier += 1 + MarketForceHelper.Values[marketForce] / 100f;
         }
-
-        float finalPrice = basePrice * marketForceMultiplier;
-        return "$" + finalPrice.ToString("F2");
+        return basePrice * marketForceMultiplier;
     }
 }

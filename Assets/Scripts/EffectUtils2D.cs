@@ -87,4 +87,25 @@ public class EffectUtils2D : MonoBehaviour, IPointerClickHandler
             canvasGroup.interactable = false;
         });
     }
+
+    public void FadeIn()
+    {
+        canvasGroup.alpha = 0;
+        canvasGroup.blocksRaycasts = true;
+        canvasGroup.interactable = true;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(canvasGroup.DOFade(1, 0.12f).SetEase(Ease.OutQuad));
+        seq.Play();
+    }
+
+    public void FadeOut()
+    {
+        canvasGroup.blocksRaycasts = false;
+        canvasGroup.interactable = false;
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(canvasGroup.DOFade(0, 0.12f).SetEase(Ease.InQuad));
+        seq.Play();
+    }
 }

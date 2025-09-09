@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
         var canvasGroup = computerMonitor.GetComponent<CanvasGroup>();
         if (canvasGroup.alpha > 0)
         {
-            computerMonitor.CloseDesktopScreen();            
+            computerMonitor.CloseDesktopScreen();
         }
         else
         {

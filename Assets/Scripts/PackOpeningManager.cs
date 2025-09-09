@@ -10,8 +10,6 @@ public class PackOpeningManager : MonoBehaviour
     public static PackOpeningManager Instance { get; private set; }
     public AnimonCardUI animonCardUI;
 
-    private CardGenerator cardGenerator;
-
     [SerializeField]
     private List<AnimonCardUI> cardUIs;
 
@@ -47,9 +45,6 @@ public class PackOpeningManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        cardGenerator = new CardGenerator(new CardSet("Base Set", "BASE", CardSetType.Core));
-        cardGenerator.PopulateSet();
     }
 
     void Update()
@@ -59,7 +54,7 @@ public class PackOpeningManager : MonoBehaviour
             Debug.Log("Adding 3 booster pack cards to collection");
             for (int i = 0; i < 3; i++)
             {
-                var pack = new BoosterPack(cardGenerator.set);
+                var pack = new BoosterPack(CardsInMarketManager.Instance.GetSetByCode("BASE"));
                 var cards = pack.CrackOpen();
                 foreach (var card in cards)
                 {
@@ -173,7 +168,7 @@ public class PackOpeningManager : MonoBehaviour
 
         topmostCard.ShowNonBackgroundContent();
 
-        cardPriceText.text = topmostCard.GetCardDefinition().GetPrice();
+        cardPriceText.text = topmostCard.GetCardDefinition().GetPriceString();
         if (isRareOrBetter)
         {
             ParticleManager.instance.PlayMagicAuraParticle(
@@ -197,10 +192,13 @@ public class PackOpeningManager : MonoBehaviour
                         .SetEase(Ease.OutCubic)
                         .OnComplete(() =>
                         {
-                            canClickToReveal = true;
                             cardPriceText
                                 .GetComponent<CanvasGroup>()
-                                .DOFade(1, 0.1f * animationVelocityMultiplier);
+                                .DOFade(1, 0.1f * animationVelocityMultiplier)
+                                .OnComplete(() =>
+                                {
+                                    canClickToReveal = true;
+                                });
                         });
                 });
         }
@@ -211,10 +209,13 @@ public class PackOpeningManager : MonoBehaviour
                 .SetEase(Ease.OutQuad)
                 .OnComplete(() =>
                 {
-                    canClickToReveal = true;
                     cardPriceText
                         .GetComponent<CanvasGroup>()
-                        .DOFade(1, 0.1f * animationVelocityMultiplier);
+                        .DOFade(1, 0.1f * animationVelocityMultiplier)
+                        .OnComplete(() =>
+                        {
+                            canClickToReveal = true;
+                        });
                 });
         }
     }
@@ -232,7 +233,7 @@ public class PackOpeningManager : MonoBehaviour
         revealedFirstCard = false;
         canClickToReveal = false;
         cardUIs = new List<AnimonCardUI>();
-        var boosterPack = new BoosterPack(cardGenerator.set);
+        var boosterPack = new BoosterPack(CardsInMarketManager.Instance.GetSetByCode("BASE"));
         var cards = boosterPack.CrackOpen();
         foreach (var card in cards)
         {
@@ -246,15 +247,7 @@ public class PackOpeningManager : MonoBehaviour
             rect.eulerAngles = new Vector3(0, 180, 0);
             rect.anchoredPosition = Vector2.zero;
 
-            cardUI.SetMainSprite(card.image);
-            cardUI.SetNameText(card.name.ToUpper());
-            cardUI.SetAtkText(card.attack.ToString());
-            cardUI.SetDefText(card.health.ToString());
-            cardUI.SetRarityText(card.rarity.ToString().ToUpper());
-            cardUI.SetCreatureTypeAndElementTypeText(
-                card.tribe.ToString() + " " + card.element.ToString()
-            );
-            cardUI.SetCardDefinition(card);
+            cardUI.SetCardInformation(new CardInstance(card));
             cardUI.HideNonBackgroundContent();
             cardUIs.Insert(0, cardUI);
         }

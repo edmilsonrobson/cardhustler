@@ -27,8 +27,8 @@ public class CardGenerator
         CardDefinition card = new CardDefinition();
         card.id = set.code + "-" + id;
         card.name = GenerateCardName(rarity, tribe, element);
-        card.image = SpritePool.RandomSprite();
-        card.set = set;
+        card.imageKey = SpritePool.RandomSprite();
+        card.setCode = set.code;
         card.rarity = rarity;
         card.tribe = tribe;
         card.element = element;

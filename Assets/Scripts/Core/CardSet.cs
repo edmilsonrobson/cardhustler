@@ -11,6 +11,8 @@ public class CardSet
     public CardSetType type;
     public List<CardDefinition> cardsDefs;
 
+    public CardSet() { }
+
     public CardSet(string name, string code, CardSetType type)
     {
         this.name = name;

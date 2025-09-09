@@ -25,4 +25,30 @@ public static class CardHelpers
         }
         return stacks;
     }
+
+    public static List<CardDefinition> SortByRarity(List<CardDefinition> cardDefs)
+    {
+        if (cardDefs == null)
+            return new List<CardDefinition>();
+        var rarityOrder = new Dictionary<Rarity, int>
+        {
+            { Rarity.Legendary, 0 },
+            { Rarity.Epic, 1 },
+            { Rarity.Rare, 2 },
+            { Rarity.Common, 3 },
+        };
+        cardDefs.Sort(
+            (a, b) =>
+            {
+                int orderA = rarityOrder.ContainsKey(a.rarity)
+                    ? rarityOrder[a.rarity]
+                    : int.MaxValue;
+                int orderB = rarityOrder.ContainsKey(b.rarity)
+                    ? rarityOrder[b.rarity]
+                    : int.MaxValue;
+                return orderA.CompareTo(orderB);
+            }
+        );
+        return cardDefs;
+    }
 }
